@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BinaryTree
 {
 
-    public class Node<T> where T : IComparable<T>
+    internal class Node<T> where T : IComparable<T>
     {
         public T Value;
         public Node<T> Left;
@@ -53,7 +53,7 @@ namespace BinaryTree
     public class Tree<T> where T : IComparable<T>
     {
         public int Count { get; private set; }
-        private Node<T> root;
+        internal Node<T> root;
 
         public Tree()
         {
@@ -108,6 +108,14 @@ namespace BinaryTree
 
         public void Add(T value)
         {
+            Count++;
+
+            if (root == null)
+            {
+                root = new Node<T>(value);
+                return;
+            }
+
             Node<T> curr = root;
             while (curr != null)
             {
@@ -154,11 +162,14 @@ namespace BinaryTree
                     Clear();
                 }
             }
+
+            Count--;
         }
 
         public void Clear()
         {
             root = null;
+            Count = 0;
         }
 
     }
