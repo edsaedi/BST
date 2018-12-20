@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-
+    //TODO: Finish Remove
     internal class Node<T> where T : IComparable<T>
     {
         public T Value;
@@ -35,6 +35,33 @@ namespace BinaryTree
                     return true;
                 }
                 return false;
+            }
+        }
+
+        public int ChildCount
+        {
+            get
+            {
+                int count = 0;
+                if (Left != null)
+                {
+                    count++;
+                }
+                if (Right != null)
+                {
+                    count++;
+                }
+                return count;
+            }
+        }
+
+        public Node<T> First
+        {
+            get
+            {
+                if (Left != null) return Left;
+                if (Right != null) return Right;
+                return null;
             }
         }
 
@@ -70,7 +97,7 @@ namespace BinaryTree
             return true;
         }
 
-        private Node<T> Find(T value)
+        internal Node<T> Find(T value)
         {
             //return node if found
             Node<T> curr = root;
@@ -147,7 +174,7 @@ namespace BinaryTree
         {
             Node<T> del = Find(value);
 
-            if (del.Left == null && del.Right == null)
+            if (del.ChildCount == 0) //the node to delete is a leaf node
             {
                 if (del.IsLeftChild)
                 {
@@ -161,6 +188,37 @@ namespace BinaryTree
                 {
                     Clear();
                 }
+            }
+            else if (del.ChildCount == 1)
+            {
+                if (del.IsLeftChild)
+                {
+                    del.Parent.Left = del.First;
+                    del.First.Parent = del.Parent;
+                }
+                else if (del.IsRightChild)
+                {
+                    del.Parent.Right = del.First;
+                    del.First.Parent = del.Parent;
+                }
+                else
+                {
+                    //root case
+                    root = del.First;
+                    root.Parent = null;
+                }
+            }
+            else if (del.ChildCount == 2)
+            {
+                Node<T> curr = del.Left;
+                while (curr.Right != null)
+                {
+                    curr = del.Right;
+                }
+
+                del.Value = curr.Value;
+
+                //delete the curr node!
             }
 
             Count--;

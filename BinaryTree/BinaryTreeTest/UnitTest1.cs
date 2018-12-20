@@ -6,6 +6,8 @@ namespace BinaryTreeTest
 {
     public class UnitTest1
     {
+        Random rand = new Random();
+
         [Fact]
         public void Add()
         {
@@ -20,13 +22,37 @@ namespace BinaryTreeTest
         [Fact]
         public void Remove()
         {
+            int size = 10000;
+            for (int i = 0; i < size; i++)
+            {
+                //initialize
+                int[] array = Randomize(size);
+                var tree = CreateTree(array);
+
+                //remove
+                int index = rand.Next(array.Length);
+                tree.Remove(array[index]);
+
+                //Assert
+                Assert.False(tree.Contains(array[index]));
+                CheckTree(tree, size - 1);
+            }
+        }
+
+        [Fact]
+        public void Find()
+        {
             int size = 100;
             for (int i = 0; i < size; i++)
             {
-                var temp = CreateTree(size);
-                Random rand = new Random();
-                temp.Remove(rand.Next(0, size));
-                CheckTree(temp, size);
+                int[] array = Randomize(size);
+                var tree = CreateTree(array);
+
+                for (int j = 0; j < array.Length; j++)
+                {
+                    Assert.True(array[j] == tree.Find(array[j]).Value);
+                }
+                
             }
         }
 
@@ -39,6 +65,17 @@ namespace BinaryTreeTest
                 tree.Add(array[i]);
             }
             return tree;
+        }
+
+        public Tree<int> CreateTree(int[] size)
+        {
+            Tree<int> tree = new Tree<int>();
+            for (int i = 0; i < size.Length; i++)
+            {
+                tree.Add(size[i]);
+            }
+            return tree;
+            //load the size array into the tree
         }
 
         internal void CheckTree(Tree<int> tree, int size)
@@ -64,7 +101,6 @@ namespace BinaryTreeTest
         public int[] Randomize(int size)
         {
             int[] array = new int[size];
-            Random rand = new Random();
             for (int i = 0; i < size; i++)
             {
                 array[i] = rand.Next(0, size);
