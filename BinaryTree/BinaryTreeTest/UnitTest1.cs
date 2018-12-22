@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using BinaryTree;
+using System.Linq;
 
 namespace BinaryTreeTest
 {
@@ -22,11 +23,12 @@ namespace BinaryTreeTest
         [Fact]
         public void Remove()
         {
-            int size = 10000;
+            int size = 100;
+
             for (int i = 0; i < size; i++)
             {
                 //initialize
-                int[] array = Randomize(size);
+                int[] array = UniqueRandomize(size);
                 var tree = CreateTree(array);
 
                 //remove
@@ -52,7 +54,6 @@ namespace BinaryTreeTest
                 {
                     Assert.True(array[j] == tree.Find(array[j]).Value);
                 }
-                
             }
         }
 
@@ -104,6 +105,25 @@ namespace BinaryTreeTest
             for (int i = 0; i < size; i++)
             {
                 array[i] = rand.Next(0, size);
+            }
+
+            return array;
+        }
+
+        public int[] UniqueRandomize(int size)
+        {
+            int[] array = new int[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                int temp = rand.Next(0, size * 2);
+
+                while (array.Contains(temp))
+                {
+                    temp = rand.Next(0, size * 2);
+                }
+
+                array[i] = temp;
             }
 
             return array;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BinaryTree
 {
     //TODO: Finish Remove
-    internal class Node<T> where T : IComparable<T>
+    public class Node<T> where T : IComparable<T>
     {
         public T Value;
         public Node<T> Left;
@@ -170,10 +170,26 @@ namespace BinaryTree
             }
         }
 
-        public void Remove(T value)
+        public bool Remove(T value)
         {
-            Node<T> del = Find(value);
+            var toRemove = Find(value);
 
+            if (toRemove == null)
+            {
+                return false;
+            }
+
+            Remove(toRemove);
+
+            if (root != null)
+            {
+                Count--;
+            }
+            return true;
+        }
+
+        private void Remove(Node<T> del)
+        {
             if (del.ChildCount == 0) //the node to delete is a leaf node
             {
                 if (del.IsLeftChild)
@@ -210,18 +226,13 @@ namespace BinaryTree
             }
             else if (del.ChildCount == 2)
             {
-                Node<T> curr = del.Left;
-                while (curr.Right != null)
-                {
-                    curr = del.Right;
-                }
+                Node<T> curr = Maximum(del.Left);
 
                 del.Value = curr.Value;
 
                 //delete the curr node!
+                Remove(curr);
             }
-
-            Count--;
         }
 
         public void Clear()
@@ -230,6 +241,23 @@ namespace BinaryTree
             Count = 0;
         }
 
+        public Node<T> Minimum(Node<T> curr)
+        {
+            while (root.Left != null)
+            {
+                curr = curr.Left;
+            }
+            return curr;
+        }
+
+        public Node<T> Maximum(Node<T> curr)
+        {
+            while (root.Right != null)
+            {
+                curr = curr.Right;
+            }
+            return curr;
+        }
     }
 
     class Program
