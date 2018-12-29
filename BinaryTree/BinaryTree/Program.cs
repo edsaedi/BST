@@ -243,7 +243,7 @@ namespace BinaryTree
 
         public Node<T> Minimum(Node<T> curr)
         {
-            while (root.Left != null)
+            while (curr.Left != null)
             {
                 curr = curr.Left;
             }
@@ -252,7 +252,7 @@ namespace BinaryTree
 
         public Node<T> Maximum(Node<T> curr)
         {
-            while (root.Right != null)
+            while (curr.Right != null)
             {
                 curr = curr.Right;
             }
