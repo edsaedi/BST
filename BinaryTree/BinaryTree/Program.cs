@@ -180,11 +180,7 @@ namespace BinaryTree
             }
 
             Remove(toRemove);
-
-            if (root != null)
-            {
-                Count--;
-            }
+            Count--;
             return true;
         }
 
@@ -202,7 +198,7 @@ namespace BinaryTree
                 }
                 else //we are the root
                 {
-                    Clear();
+                    root = null;
                 }
             }
             else if (del.ChildCount == 1)
